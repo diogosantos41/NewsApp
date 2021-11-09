@@ -8,7 +8,8 @@
     <dimen name="page_margin">15dp</dimen>
 
     <!-- Sizes -->
-    <dimen name="splashScreenIconSize">150dp</dimen>
+    <dimen name="splash_screen_icon_size">150dp</dimen>
+    <dimen name="progress_bar_icon_size">60dp</dimen>
 
 
 </resources>

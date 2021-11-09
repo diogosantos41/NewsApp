@@ -6,8 +6,8 @@
     android:background="@color/colorSplashScreenBackground">
 
     <ImageView
-        android:layout_width="@dimen/splashScreenIconSize"
-        android:layout_height="@dimen/splashScreenIconSize"
+        android:layout_width="@dimen/splash_screen_icon_size"
+        android:layout_height="@dimen/splash_screen_icon_size"
         android:src="@drawable/ic_news"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
