@@ -1,4 +1,4 @@
-package com.dscode.newsapp.ui
+package com.dscode.newsapp.ui.article_list
 
 import android.os.Bundle
 import android.view.*
@@ -9,9 +9,9 @@ import com.dscode.newsapp.R
 import com.dscode.newsapp.common.Failure
 import com.dscode.newsapp.data.remote.model.Article
 import com.dscode.newsapp.databinding.FragmentArticleListBinding
-import com.dscode.newsapp.ui.ArticleAdapter.Companion.SPAN_COUNT_ONE
-import com.dscode.newsapp.ui.ArticleAdapter.Companion.SPAN_COUNT_THREE
-import com.dscode.newsapp.utils.invisible
+import com.dscode.newsapp.ui.main.BaseFragment
+import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_ONE
+import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_THREE
 
 
 class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener {

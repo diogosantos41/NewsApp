@@ -1,4 +1,4 @@
-package com.dscode.newsapp.ui
+package com.dscode.newsapp.ui.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels

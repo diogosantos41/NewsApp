@@ -1,4 +1,4 @@
-package com.dscode.newsapp.ui
+package com.dscode.newsapp.ui.splashscreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.dscode.newsapp.common.Constants.SPLASH_SCREEN_DURATION
 import com.dscode.newsapp.databinding.ActivitySplashScreenBinding
+import com.dscode.newsapp.ui.main.MainActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -14,7 +15,6 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

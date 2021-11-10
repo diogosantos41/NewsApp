@@ -1,4 +1,4 @@
-package com.dscode.newsapp.ui
+package com.dscode.newsapp.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dscode.newsapp.R
 import com.dscode.newsapp.data.repository.RepositoryImpl
 import com.dscode.newsapp.databinding.ActivityMainBinding
+import com.dscode.newsapp.ui.article_list.ArticlesListFragment
 import com.dscode.newsapp.utils.invisible
 import com.dscode.newsapp.utils.isVisible
 import com.dscode.newsapp.utils.visible

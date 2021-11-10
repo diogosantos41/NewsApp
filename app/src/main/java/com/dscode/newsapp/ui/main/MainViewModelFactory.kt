@@ -1,4 +1,4 @@
-package com.dscode.newsapp.ui
+package com.dscode.newsapp.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

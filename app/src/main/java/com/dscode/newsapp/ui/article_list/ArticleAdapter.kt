@@ -1,4 +1,4 @@
-package com.dscode.newsapp.ui
+package com.dscode.newsapp.ui.article_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
