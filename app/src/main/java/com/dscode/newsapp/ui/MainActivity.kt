@@ -7,6 +7,7 @@ import com.dscode.newsapp.R
 import com.dscode.newsapp.data.repository.RepositoryImpl
 import com.dscode.newsapp.databinding.ActivityMainBinding
 import com.dscode.newsapp.utils.invisible
+import com.dscode.newsapp.utils.isVisible
 import com.dscode.newsapp.utils.visible
 
 
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
 
     fun hideProgressBar() {
         binding.loadingViewLl.invisible()
+    }
+
+    fun isLoading(): Boolean {
+        return binding.loadingViewLl.isVisible()
     }
 
     fun switchFragment(fragment: BaseFragment) {

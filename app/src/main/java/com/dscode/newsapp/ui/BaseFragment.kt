@@ -8,15 +8,17 @@ abstract class BaseFragment : Fragment() {
     protected val viewModel by activityViewModels<MainViewModel>()
 
     protected fun showProgressBar() {
-        with(activity) {
-            if (this is MainActivity) this.showProgressBar()
-        }
+        if (activity is MainActivity) (activity as MainActivity).showProgressBar()
     }
 
     protected fun hideProgressBar() {
-        with(activity) {
-            if (this is MainActivity) this.hideProgressBar()
-        }
+        if (activity is MainActivity) (activity as MainActivity).hideProgressBar()
+
+    }
+
+    protected fun isLoading(): Boolean {
+        if (activity is MainActivity) return (activity as MainActivity).isLoading()
+        return false
     }
 
     protected fun close() {

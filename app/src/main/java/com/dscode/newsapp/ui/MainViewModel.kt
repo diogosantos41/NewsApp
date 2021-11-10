@@ -36,7 +36,7 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
                 }
             }
             is Resource.Error -> {
-                _newsFailure
+                _newsFailure.value = newsResponse.failure
             }
         }
     }

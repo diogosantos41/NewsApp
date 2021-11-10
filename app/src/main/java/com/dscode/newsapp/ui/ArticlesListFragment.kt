@@ -2,6 +2,7 @@ package com.dscode.newsapp.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dscode.newsapp.R
@@ -78,10 +79,10 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
                 // TODO Show Empty View
             }
             is Failure.NetworkConnection -> {
-                // TODO show error popup
+                Toast.makeText(context, "Cannot connect to network, check internet", Toast.LENGTH_SHORT).show()
             }
             is Failure.UnexpectedError -> {
-                // TODO show error popup
+                Toast.makeText(context, "Unexpected error", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -91,13 +92,17 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.menu_item_change_list_layout -> {
-            switchLayout()
-            switchIcon(item)
-            true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (!isLoading()) {
+            when (item.itemId) {
+                R.id.menu_item_change_list_layout -> {
+                    switchLayout()
+                    switchIcon(item)
+                    true
+                }
+            }
         }
-        else -> super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
     private fun switchLayout() {

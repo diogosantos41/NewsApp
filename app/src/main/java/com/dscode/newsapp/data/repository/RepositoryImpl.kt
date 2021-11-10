@@ -1,9 +1,9 @@
 package com.dscode.newsapp.data.repository
 
-import com.dscode.newsapp.common.Failure.UnexpectedError
 import com.dscode.newsapp.common.Failure.NetworkConnection
+import com.dscode.newsapp.common.Failure.UnexpectedError
 import com.dscode.newsapp.common.Resource
-import com.dscode.newsapp.data.remote.RetrofitInstance
+import com.dscode.newsapp.data.remote.api.RetrofitInstance
 import com.dscode.newsapp.data.remote.model.toNews
 import com.dscode.newsapp.domain.model.News
 import com.dscode.newsapp.domain.repository.Repository

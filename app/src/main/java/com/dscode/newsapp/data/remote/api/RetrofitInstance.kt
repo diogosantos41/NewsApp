@@ -1,4 +1,4 @@
-package com.dscode.newsapp.data.remote
+package com.dscode.newsapp.data.remote.api
 
 import com.dscode.newsapp.common.Constants.BASE_URL
 import retrofit2.Retrofit
@@ -14,6 +14,6 @@ object RetrofitInstance {
     }
 
     val newsApi: NewsApi by lazy {
-        retrofit.create(newsApi::class.java)
+        retrofit.create(NewsApi::class.java)
     }
 }

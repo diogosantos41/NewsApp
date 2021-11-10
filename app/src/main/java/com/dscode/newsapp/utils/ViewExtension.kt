@@ -10,8 +10,10 @@ fun View.visible() {
 }
 
 fun View.invisible() {
-    this.visibility = View.VISIBLE
+    this.visibility = View.GONE
 }
+
+fun View.isVisible() = this.visibility == View.VISIBLE
 
 fun ImageView.loadFromUrl(url: String) =
     Picasso.get().load(url)
