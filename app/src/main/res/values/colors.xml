@@ -17,6 +17,6 @@
 
     <!-- -->
     <color name="colorAppBackground">@color/colorWhite</color>
-    <color name="colorSplashScreenBackground">@color/colorGreyLight</color>
+    <color name="colorSplashScreenBackground">@color/colorSecondary</color>
     <color name="colorProgressBarBackground">#B3fd8469</color>
 </resources>

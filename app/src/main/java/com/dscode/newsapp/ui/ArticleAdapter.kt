@@ -14,13 +14,14 @@ import com.dscode.newsapp.databinding.ItemArticleGridBinding
 class ArticleAdapter(
     private val itemClickListener: OnItemClickListener,
     private val layoutManager: GridLayoutManager
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val spanCountOne = 1
-    private val spanCountThree = 3
-    private val viewTypeGrid = 1
-    private val viewTypeCompact = 2
+    companion object {
+        const val SPAN_COUNT_ONE = 1
+        const val SPAN_COUNT_THREE = 3
+        const val VIEW_TYPE_GRID = 1
+        const val VIEW_TYPE_COMPACT = 2
+    }
 
     inner class ArticleGridLayoutViewHolder(val itemBinding: ItemArticleGridBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
@@ -41,7 +42,7 @@ class ArticleAdapter(
     private val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == viewTypeCompact) {
+        if (viewType == VIEW_TYPE_COMPACT) {
             val itemBinding = ItemArticleCompactBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -85,14 +86,14 @@ class ArticleAdapter(
 
     override fun getItemViewType(position: Int): Int {
         var spanCount = layoutManager.spanCount
-        return if (spanCount == spanCountOne) {
-            viewTypeCompact
+        return if (spanCount == SPAN_COUNT_ONE) {
+            VIEW_TYPE_COMPACT
         } else {
-            viewTypeGrid
+            VIEW_TYPE_GRID
         }
     }
 
-    fun submitList(list: ArrayList<Article>) {
+    fun submitList(list: List<Article>) {
         differ.submitList(list)
         //notifyDataSetChanged()
     }

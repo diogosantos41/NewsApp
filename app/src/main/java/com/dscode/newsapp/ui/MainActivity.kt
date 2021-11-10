@@ -1,10 +1,10 @@
 package com.dscode.newsapp.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.dscode.newsapp.R
+import com.dscode.newsapp.data.repository.RepositoryImpl
 import com.dscode.newsapp.databinding.ActivityMainBinding
 import com.dscode.newsapp.utils.invisible
 import com.dscode.newsapp.utils.visible
@@ -13,11 +13,20 @@ import com.dscode.newsapp.utils.visible
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupViewModel()
+        switchFragment(ArticlesListFragment())
+    }
+
+    private fun setupViewModel() {
+        val repository = RepositoryImpl()
+        val viewModelFactory = MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
 
     fun showProgressBar() {
@@ -28,12 +37,12 @@ class MainActivity : AppCompatActivity() {
         binding.loadingViewLl.invisible()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
+    fun switchFragment(fragment: BaseFragment) {
+        if (fragment != null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit()
+        }
     }
 }

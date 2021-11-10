@@ -1,7 +1,12 @@
 package com.dscode.newsapp.common
 
 sealed class Failure {
+
+    // Generic Failure
     object NetworkConnection : Failure()
     object UnexpectedError : Failure()
-    abstract class FeatureFailure : Failure()
+
+    // News Failure
+    object ListIsEmpty : Failure()
+
 }

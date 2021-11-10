@@ -11,5 +11,8 @@
     <dimen name="splash_screen_icon_size">150dp</dimen>
     <dimen name="progress_bar_icon_size">60dp</dimen>
 
+    <!-- -->
+    <dimen name="article_item_card_view_radius">10dp</dimen>
+
 
 </resources>
