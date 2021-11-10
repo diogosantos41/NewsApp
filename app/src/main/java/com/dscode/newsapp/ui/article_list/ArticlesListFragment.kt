@@ -9,9 +9,10 @@ import com.dscode.newsapp.R
 import com.dscode.newsapp.common.Failure
 import com.dscode.newsapp.data.remote.model.Article
 import com.dscode.newsapp.databinding.FragmentArticleListBinding
-import com.dscode.newsapp.ui.main.BaseFragment
 import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_ONE
-import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_THREE
+import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_TWO
+import com.dscode.newsapp.ui.main.BaseFragment
+import com.dscode.newsapp.utils.invisible
 
 
 class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener {
@@ -45,7 +46,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
 
     private fun getNews() {
         showProgressBar()
-        viewModel.callGetNews()
+        viewModel.callGetNews("us") // TODO get dynamic country code
     }
 
     private fun setupObservers() {
@@ -68,7 +69,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
     }
 
     override fun onItemClicked(article: Article) {
-        TODO("Not yet implemented")
+        viewModel.selectArticle(article)
     }
 
 
@@ -79,10 +80,18 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
                 // TODO Show Empty View
             }
             is Failure.NetworkConnection -> {
-                Toast.makeText(context, "Cannot connect to network, check internet", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.failure_network_connection),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             is Failure.UnexpectedError -> {
-                Toast.makeText(context, "Unexpected error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.failure_unexpected_error),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -107,7 +116,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
 
     private fun switchLayout() {
         if (gridLayoutManager.spanCount == SPAN_COUNT_ONE) {
-            gridLayoutManager.spanCount = SPAN_COUNT_THREE
+            gridLayoutManager.spanCount = SPAN_COUNT_TWO
         } else {
             gridLayoutManager.spanCount = SPAN_COUNT_ONE
         }
@@ -118,7 +127,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         if (gridLayoutManager.spanCount == SPAN_COUNT_ONE) {
             item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_toolbar_grid, null)
         } else {
-            item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_toolbar_list, null)
+            item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_toolbar_compact, null)
         }
     }
 

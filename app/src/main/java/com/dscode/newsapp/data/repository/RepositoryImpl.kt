@@ -1,7 +1,6 @@
 package com.dscode.newsapp.data.repository
 
-import com.dscode.newsapp.common.Failure.NetworkConnection
-import com.dscode.newsapp.common.Failure.UnexpectedError
+import com.dscode.newsapp.common.Failure
 import com.dscode.newsapp.common.Resource
 import com.dscode.newsapp.data.remote.api.RetrofitInstance
 import com.dscode.newsapp.data.remote.model.toNews
@@ -17,9 +16,9 @@ class RepositoryImpl : Repository {
             val news = RetrofitInstance.newsApi.getNews(countryCode).toNews()
             Resource.Success<News>(news)
         } catch (e: HttpException) {
-            Resource.Error<News>(UnexpectedError)
+            Resource.Error<News>(Failure.UnexpectedError)
         } catch (e: IOException) {
-            Resource.Error<News>(NetworkConnection)
+            Resource.Error<News>(Failure.NetworkConnection)
         }
     }
 
@@ -28,9 +27,9 @@ class RepositoryImpl : Repository {
             val news = RetrofitInstance.newsApi.getNewsByCategory(countryCode, category).toNews()
             Resource.Success<News>(news)
         } catch (e: HttpException) {
-            Resource.Error<News>(UnexpectedError)
+            Resource.Error<News>(Failure.UnexpectedError)
         } catch (e: IOException) {
-            Resource.Error<News>(NetworkConnection)
+            Resource.Error<News>(Failure.NetworkConnection)
         }
     }
 }

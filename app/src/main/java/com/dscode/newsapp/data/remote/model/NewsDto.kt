@@ -10,8 +10,6 @@ data class NewsDto(
 
 fun NewsDto.toNews(): News {
     return News(
-        articles = articles,
-        status = status,
-        totalResults = totalResults,
+        articles = articles
     )
 }

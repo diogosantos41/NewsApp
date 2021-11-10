@@ -18,7 +18,7 @@ class ArticleAdapter(
 
     companion object {
         const val SPAN_COUNT_ONE = 1
-        const val SPAN_COUNT_THREE = 3
+        const val SPAN_COUNT_TWO = 2
         const val VIEW_TYPE_GRID = 1
         const val VIEW_TYPE_COMPACT = 2
     }
@@ -78,10 +78,11 @@ class ArticleAdapter(
             }
         }
 
-
-        // root.setOnClickListener {
-        // if (holder.adapterPosition != -1) {
-        //   itemClickListener.onItemClicked(this)
+        holder.itemView.setOnClickListener {
+            if (holder.adapterPosition != -1) {
+                itemClickListener.onItemClicked(differ.currentList[position])
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -95,11 +96,9 @@ class ArticleAdapter(
 
     fun submitList(list: List<Article>) {
         differ.submitList(list)
-        //notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
-        // TODO viewModel receives click
         fun onItemClicked(article: Article)
     }
 }
