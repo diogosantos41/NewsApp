@@ -1,11 +1,13 @@
 package com.dscode.newsapp.ui.article_detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import com.dscode.newsapp.R
 import com.dscode.newsapp.databinding.FragmentArticleDetailBinding
 import com.dscode.newsapp.ui.main.BaseFragment
+import com.dscode.newsapp.utils.loadFromUrl
+import com.dscode.newsapp.utils.openUrl
+
 
 class ArticleDetailsFragment : BaseFragment() {
 
@@ -30,10 +32,28 @@ class ArticleDetailsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getSelectedArticle()?.let {
             with(binding) {
-                it.source.id
+                this?.articleDetailThumbnailIv?.loadFromUrl(it.urlToImage)
             }
         }
-        // TODO ui stuff
+
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.clear()
+        activity?.menuInflater?.inflate(R.menu.menu_article_detail, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (!isLoading()) {
+            when (item.itemId) {
+                R.id.menu_item_browser -> {
+                    viewModel.getSelectedArticle()?.url?.let { openUrl(it) }
+                    true
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

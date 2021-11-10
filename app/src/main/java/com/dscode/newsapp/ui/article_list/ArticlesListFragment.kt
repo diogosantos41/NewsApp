@@ -96,9 +96,10 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.clear()
+        activity?.menuInflater?.inflate(R.menu.menu_articles_list, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

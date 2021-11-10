@@ -2,8 +2,6 @@ package com.dscode.newsapp.utils
 
 import android.view.View
 import android.widget.ImageView
-import androidx.fragment.app.FragmentManager
-import com.dscode.newsapp.ui.main.BaseFragment
 import com.squareup.picasso.Picasso
 
 
@@ -19,5 +17,7 @@ fun View.isVisible() = this.visibility == View.VISIBLE
 
 fun ImageView.loadFromUrl(url: String) =
     Picasso.get().load(url)
+        .centerCrop()
+        .fit()
         .into(this);
 
