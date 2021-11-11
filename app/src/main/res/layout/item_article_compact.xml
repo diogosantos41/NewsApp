@@ -1,21 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        style="@style/ItemCompactCardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorSecondary"
-        android:padding="@dimen/margin"
-        android:text="COMPACT VIEW HERE ----"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:layout_margin="5dp"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/page_margin" />
+
+            <ImageView
+                android:id="@+id/item_compact_article_thumbnail_iv"
+                android:layout_width="@dimen/article_item_compact_thumbnail_width"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_compact_article_title_tv"
+                style="@style/ItemCompactArticleTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                android:ellipsize="end"
+                android:maxLines="2"
+                app:layout_constraintBottom_toTopOf="@+id/item_compact_article_source_tv"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@+id/item_compact_article_thumbnail_iv"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title of the article" />
+
+            <TextView
+                android:id="@+id/item_compact_article_source_tv"
+                style="@style/ItemCompactArticleSource"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toEndOf="@+id/item_compact_article_thumbnail_iv"
+                app:layout_constraintTop_toBottomOf="@+id/item_compact_article_title_tv"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="By Source name" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dscode.newsapp.R
 import com.dscode.newsapp.common.Failure
 import com.dscode.newsapp.data.remote.model.Article
@@ -21,7 +21,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
     private val binding get() = _binding
 
     private lateinit var articleAdapter: ArticleAdapter
-    private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var gridLayoutManager: StaggeredGridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
     }
 
     private fun setupRecyclerView() = binding?.articlesRv?.apply {
-        gridLayoutManager = GridLayoutManager(context, SPAN_COUNT_ONE)
+        gridLayoutManager = StaggeredGridLayoutManager(SPAN_COUNT_TWO, StaggeredGridLayoutManager.VERTICAL)
         articleAdapter = ArticleAdapter(this@ArticlesListFragment, gridLayoutManager)
         adapter = articleAdapter
         layoutManager = gridLayoutManager

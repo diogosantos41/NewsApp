@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="SplashScreenStyle" parent="Theme.AppCompat.Light.NoActionBar"/>
+    <style name="SplashScreenStyle" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <!-- Text -->
+    <style name="Text12">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="fontFamily"></item>
+    </style>
+
+    <style name="Text12Bold" parent="Text12">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Text14">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorGreyDark</item>
+        <item name="android:textColor">@color/colorWhite</item>
         <item name="fontFamily"></item>
     </style>
 
@@ -16,7 +26,7 @@
 
     <style name="Text16">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/colorGreyDark</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
     <style name="Text16Bold" parent="Text16">
@@ -25,11 +35,65 @@
 
     <style name="Text20">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorGreyDark</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
     <style name="Text20Bold" parent="Text20">
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Generic -->
+    <style name="Divider">
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+
+    <!-- Item Grid Layout styles -->
+
+    <style name="ItemGridArticleTitle" parent="Text16Bold">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="ItemGridArticleDescription" parent="Text14" />
+
+    <style name="ItemGridArticleSource" parent="Text14Bold" />
+
+    <style name="ItemGridCardView">
+        <item name="cardBackgroundColor">@color/colorSecondary</item>
+        <item name="cardCornerRadius">@dimen/article_item_grid_card_view_radius</item>
+
+    </style>
+
+    <!-- Item Compact Layout styles -->
+
+    <style name="ItemCompactArticleTitle" parent="Text16Bold">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="ItemCompactArticleDescription" parent="Text14" />
+
+    <style name="ItemCompactArticleSource" parent="Text14Bold" />
+
+    <style name="ItemCompactCardView">
+        <item name="cardBackgroundColor">@color/colorSecondary</item>
+        <item name="cardCornerRadius">@dimen/article_item_compact_card_view_radius</item>
+        <item name="android:layout_height">@dimen/article_item_compact_height</item>
+
+    </style>
+
+    <!-- Article Detail Layout -->
+
+    <!-- Item Compact Layout styles -->
+
+    <style name="ArticleDetailTitle" parent="Text20Bold">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="ArticleDetailDate" parent="Text14" />
+
+    <style name="ArticleDetailSource" parent="Text16Bold" />
+
+    <style name="ArticleDetailContent" parent="Text16">
+
+    </style>
 </resources>

@@ -32,10 +32,19 @@ class ArticleDetailsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getSelectedArticle()?.let {
             with(binding) {
+                this?.articleDetailTitleTv?.text = it.title
+                this?.articleDetailPublishedDateTv?.text =
+                    getString(R.string.article_date_published_on)
+                        .plus(" ")
+                        .plus(it.publishedAt)
+                this?.articleDetailSourceTv?.text =
+                    getString(R.string.article_source_by)
+                        .plus(" ")
+                        .plus(it.source.name)
                 this?.articleDetailThumbnailIv?.loadFromUrl(it.urlToImage)
+                this?.articleDetailContentTv?.text = it.content
             }
         }
-
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

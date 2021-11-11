@@ -4,16 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.dscode.newsapp.R
 import com.dscode.newsapp.data.remote.model.Article
 import com.dscode.newsapp.databinding.ItemArticleCompactBinding
 import com.dscode.newsapp.databinding.ItemArticleGridBinding
+import com.dscode.newsapp.utils.loadFromUrl
 
 
 class ArticleAdapter(
     private val itemClickListener: OnItemClickListener,
-    private val layoutManager: GridLayoutManager
+    private val layoutManager: StaggeredGridLayoutManager
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -68,12 +70,23 @@ class ArticleAdapter(
         with(differ.currentList[position]) {
             if (holder is ArticleCompactLayoutViewHolder) {
                 with(holder.itemBinding) {
-
+                    itemCompactArticleTitleTv.text = title
+                    itemCompactArticleSourceTv.text =
+                        holder.itemView.context.getString(R.string.article_source_by)
+                            .plus(" ")
+                            .plus(source.name)
+                    itemCompactArticleThumbnailIv.loadFromUrl(urlToImage)
                 }
 
             } else if (holder is ArticleGridLayoutViewHolder) {
                 with(holder.itemBinding) {
-
+                    itemGridArticleTitleTv.text = title
+                    itemGridArticleDescriptionTv.text = description
+                    itemGridArticleSourceTv.text =
+                        holder.itemView.context.getString(R.string.article_source_published_by)
+                            .plus(" ")
+                            .plus(source.name)
+                    itemGridArticleThumbnailIv.loadFromUrl(urlToImage)
                 }
             }
         }

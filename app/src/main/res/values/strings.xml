@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">News</string>
 
+    <string name="article_source_by">By</string>
+    <string name="article_source_published_by">Published by</string>
+    <string name="article_date_published_on">Published on</string>
+
     <string name="failure_unexpected_error">An unexpected error has occurred</string>
     <string name="failure_network_connection">Cannot reach server. Please check your internet connection.</string>
 </resources>

@@ -16,7 +16,7 @@
     <color name="colorError">#CD1C1C</color>
 
     <!-- -->
-    <color name="colorAppBackground">@color/colorWhite</color>
+    <color name="colorAppBackground">@color/colorGreyLight</color>
     <color name="colorSplashScreenBackground">@color/colorSecondary</color>
     <color name="colorProgressBarBackground">#B3fd8469</color>
 </resources>

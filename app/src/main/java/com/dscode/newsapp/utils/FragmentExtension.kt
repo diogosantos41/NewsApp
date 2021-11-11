@@ -8,6 +8,7 @@ import com.dscode.newsapp.ui.main.BaseFragment
 
 fun FragmentManager.add(containerViewId: Int, fragment: BaseFragment) {
     this.beginTransaction()
+        .addToBackStack(fragment.tag)
         .add(containerViewId, fragment)
         .commit()
 }

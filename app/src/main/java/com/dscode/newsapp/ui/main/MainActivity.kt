@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         return binding.loadingViewLl.isVisible()
     }
 
-     fun addFragment(fragment: BaseFragment) =
+     private fun addFragment(fragment: BaseFragment) =
         addFragment(fragment, null)
 
 
