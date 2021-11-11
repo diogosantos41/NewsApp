@@ -20,7 +20,13 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
 
     private val _selectedArticle: MutableLiveData<Article> = MutableLiveData()
 
-    fun callGetNews(countryCode: String) {
+    private var countryCode: String = ""
+
+    fun callGetNews() {
+        callGetNews(countryCode)
+    }
+
+    private fun callGetNews(countryCode: String) {
         viewModelScope.launch {
             newsResponse = repositoryImpl.getNews(countryCode)
         }.invokeOnCompletion {
@@ -43,6 +49,11 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
         }
     }
 
+
+    fun updateCountryCode(countryCode: String) {
+        if (countryCode != this.countryCode) callGetNews(countryCode)
+    }
+
     fun selectArticle(article: Article) {
         _selectedArticle.value = article
     }
@@ -54,5 +65,4 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
     fun onFailure(): LiveData<Failure> = _newsFailure
 
     fun onSelectedArticleChange(): LiveData<Article> = _selectedArticle
-
 }

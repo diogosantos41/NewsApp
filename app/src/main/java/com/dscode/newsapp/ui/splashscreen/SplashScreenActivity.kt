@@ -9,12 +9,12 @@ import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.dscode.newsapp.R
 import com.dscode.newsapp.common.Constants.SPLASH_SCREEN_DURATION
 import com.dscode.newsapp.databinding.ActivitySplashScreenBinding
 import com.dscode.newsapp.ui.main.MainActivity
-
+import com.dscode.newsapp.utils.hasLocationPermissions
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -29,15 +29,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (hasLocationPermissions(this)) {
             startMainActivity()
         } else {
             requestPermissions(
@@ -58,25 +50,23 @@ class SplashScreenActivity : AppCompatActivity() {
     ) {
         when (requestCode) {
             REQUEST_CODE -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                ) {
-                    // Permission is granted. Continue the action or workflow
-                    // in your app.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     startMainActivity()
                 } else {
-                    showPermissionExplanationDialog()
-                    // Explain to the user that the feature is unavailable because
-                    // the features requires a permission that the user has denied.
-                    // At the same time, respect the user's decision. Don't link to
-                    // system settings in an effort to convince the user to change
-                    // their decision.
+                    if (shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                        && shouldShowRequestPermissionRationale(
+                            this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    ) {
+                        showPermissionExplanationDialog()
+                    } else {
+                        startMainActivity()
+                    }
                 }
-                return
-            }
-            else -> {
-                // Ignore all other requests.
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -92,19 +82,15 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun showPermissionExplanationDialog() {
         val builder = AlertDialog.Builder(this)
-        //set title for alert dialog
-        builder.setTitle(getString(R.string.app_name))
-        //set message for alert dialog
-        builder.setMessage(getString(R.string.failure_network_connection))
-        builder.setIcon(android.R.drawable.ic_dialog_alert)
 
-        //performing positive action
-        builder.setPositiveButton("Okay") { _, _ ->
+        builder.setTitle(getString(R.string.generic_information))
+        builder.setMessage(getString(R.string.permissions_denied_message))
+        builder.setIcon(R.drawable.ic_info)
+        builder.setPositiveButton(R.string.generic_ok) { _, _ ->
             startMainActivity()
         }
-        // Create the AlertDialog
+
         val alertDialog: AlertDialog = builder.create()
-        // Set other dialog properties
         alertDialog.setCancelable(false)
         alertDialog.show()
     }

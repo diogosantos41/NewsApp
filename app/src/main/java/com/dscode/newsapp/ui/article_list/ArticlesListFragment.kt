@@ -39,13 +39,13 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getNews()
+        showProgressBar()
         setupRecyclerView()
     }
 
-    private fun getNews() {
+    private fun refreshNews() {
         showProgressBar()
-        viewModel.callGetNews("us") // TODO get dynamic country code
+        viewModel.callGetNews()
     }
 
     private fun setupObservers() {
@@ -83,14 +83,14 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
                 notifyWithAction(
                     R.string.failure_network_connection,
                     R.string.generic_retry,
-                    ::getNews
+                    ::refreshNews
                 )
             }
             is Failure.UnexpectedError -> {
                 notifyWithAction(
                     R.string.failure_unexpected_error,
                     R.string.generic_retry,
-                    ::getNews
+                    ::refreshNews
                 )
             }
         }

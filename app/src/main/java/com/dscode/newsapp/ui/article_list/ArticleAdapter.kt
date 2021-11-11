@@ -2,6 +2,7 @@ package com.dscode.newsapp.ui.article_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -75,8 +76,16 @@ class ArticleAdapter(
                         holder.itemView.context.getString(R.string.article_source_by)
                             .plus(" ")
                             .plus(source.name)
-                    itemCompactArticleThumbnailIv.loadFromUrl(urlToImage)
-                }
+                    if (!urlToImage.isNullOrEmpty()) {
+                        itemCompactArticleThumbnailIv.loadFromUrl(urlToImage)
+                    } else {
+                        itemCompactArticleThumbnailIv.setBackgroundColor(
+                            ContextCompat.getColor(
+                                holder.itemView.context,
+                                R.color.colorPrimary
+                            )
+                        )
+                    }                }
 
             } else if (holder is ArticleGridLayoutViewHolder) {
                 with(holder.itemBinding) {
@@ -86,8 +95,18 @@ class ArticleAdapter(
                         holder.itemView.context.getString(R.string.article_source_published_by)
                             .plus(" ")
                             .plus(source.name)
-                    itemGridArticleThumbnailIv.loadFromUrl(urlToImage)
+                    if (!urlToImage.isNullOrEmpty()) {
+                        itemGridArticleThumbnailIv.loadFromUrl(urlToImage)
+                    } else {
+                        itemGridArticleThumbnailIv.setBackgroundColor(
+                            ContextCompat.getColor(
+                                holder.itemView.context,
+                                R.color.colorPrimary
+                            )
+                        )
+                    }
                 }
+
             }
         }
 

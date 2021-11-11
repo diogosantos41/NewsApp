@@ -5,6 +5,7 @@ import android.view.*
 import com.dscode.newsapp.R
 import com.dscode.newsapp.databinding.FragmentArticleDetailBinding
 import com.dscode.newsapp.ui.main.BaseFragment
+import com.dscode.newsapp.utils.convertServerDateToDisplayDate
 import com.dscode.newsapp.utils.loadFromUrl
 import com.dscode.newsapp.utils.openUrl
 
@@ -36,7 +37,7 @@ class ArticleDetailsFragment : BaseFragment() {
                 this?.articleDetailPublishedDateTv?.text =
                     getString(R.string.article_date_published_on)
                         .plus(" ")
-                        .plus(it.publishedAt)
+                        .plus(convertServerDateToDisplayDate(it.publishedAt))
                 this?.articleDetailSourceTv?.text =
                     getString(R.string.article_source_by)
                         .plus(" ")

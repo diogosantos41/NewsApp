@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">News</string>
 
+    <string name="generic_ok">OK</string>
     <string name="generic_retry">Retry</string>
+    <string name="generic_information">Information</string>
+
+    <string name="permissions_denied_message">Location permissions are used to show specific news from your current location, but do not worry, without this permission we will use the United States by default.</string>
 
     <string name="article_source_by">By</string>
     <string name="article_source_published_by">Published by</string>
