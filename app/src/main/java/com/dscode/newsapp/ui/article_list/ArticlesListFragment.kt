@@ -2,7 +2,6 @@ package com.dscode.newsapp.ui.article_list
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dscode.newsapp.R
@@ -62,7 +61,8 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
     }
 
     private fun setupRecyclerView() = binding?.articlesRv?.apply {
-        gridLayoutManager = StaggeredGridLayoutManager(SPAN_COUNT_TWO, StaggeredGridLayoutManager.VERTICAL)
+        gridLayoutManager =
+            StaggeredGridLayoutManager(SPAN_COUNT_TWO, StaggeredGridLayoutManager.VERTICAL)
         articleAdapter = ArticleAdapter(this@ArticlesListFragment, gridLayoutManager)
         adapter = articleAdapter
         layoutManager = gridLayoutManager
@@ -80,18 +80,18 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
                 // TODO Show Empty View
             }
             is Failure.NetworkConnection -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.failure_network_connection),
-                    Toast.LENGTH_SHORT
-                ).show()
+                notifyWithAction(
+                    R.string.failure_network_connection,
+                    R.string.generic_retry,
+                    ::getNews
+                )
             }
             is Failure.UnexpectedError -> {
-                Toast.makeText(
-                    context,
-                    getString(R.string.failure_unexpected_error),
-                    Toast.LENGTH_SHORT
-                ).show()
+                notifyWithAction(
+                    R.string.failure_unexpected_error,
+                    R.string.generic_retry,
+                    ::getNews
+                )
             }
         }
     }
