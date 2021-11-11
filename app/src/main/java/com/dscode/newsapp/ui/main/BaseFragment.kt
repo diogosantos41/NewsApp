@@ -55,9 +55,6 @@ abstract class BaseFragment : Fragment() {
         return false
     }
 
-    protected fun notify(message: String) =
-        Snackbar.make(getViewContainer(), message, Snackbar.LENGTH_SHORT).show()
-
     protected fun notifyWithAction(
         message: String,
         actionText: String,

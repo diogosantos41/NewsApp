@@ -32,6 +32,10 @@ class ArticleDetailsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fillWithArticleData()
+    }
+
+    private fun fillWithArticleData() {
         viewModel.getSelectedArticle()?.let {
             with(binding) {
                 this?.articleDetailTitleTv?.text = it.title

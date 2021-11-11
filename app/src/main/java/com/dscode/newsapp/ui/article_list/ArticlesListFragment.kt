@@ -46,14 +46,6 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         setupRecyclerView()
     }
 
-    private fun refreshNews() {
-        viewModel.callGetNews()
-    }
-
-    private fun clearQuery() {
-        viewModel.clearQuery()
-    }
-
     private fun setupObservers() {
         viewModel.getNews().observe(this, {
             hideEmptyView()
@@ -66,17 +58,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         })
 
         viewModel.onCategoryQueryChange().observe(this, {
-            if (it.isNotEmpty()) {
-                binding?.articlesListSearchFilterLl?.visible()
-                binding?.articlesListSearchFilterQueryTv?.text =
-                    getString(R.string.article_list_searching_category, it)
-                binding?.articlesListSearchFilterClearTv?.setOnClickListener {
-                    binding?.articlesListSearchFilterLl?.invisible()
-                    clearQuery()
-                }
-            } else {
-                binding?.articlesListSearchFilterLl?.invisible()
-            }
+            handleCategoryChange(it)
         })
     }
 
@@ -88,15 +70,36 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         layoutManager = gridLayoutManager
     }
 
+    private fun refreshNews() {
+        viewModel.callGetNews()
+    }
+
+    private fun clearQuery() {
+        viewModel.clearQuery()
+    }
+
     override fun onItemClicked(article: Article) {
         viewModel.selectArticle(article)
+    }
+
+    private fun handleCategoryChange(it: String) {
+        if (it.isNotEmpty()) {
+            binding?.articlesListSearchFilterLl?.visible()
+            binding?.articlesListSearchFilterQueryTv?.text =
+                getString(R.string.article_list_searching_category, it)
+            binding?.articlesListSearchFilterClearTv?.setOnClickListener {
+                binding?.articlesListSearchFilterLl?.invisible()
+                clearQuery()
+            }
+        } else {
+            binding?.articlesListSearchFilterLl?.invisible()
+        }
     }
 
     private fun handleFailure(failure: Failure) {
         when (failure) {
             is Failure.ListIsEmpty -> {
-                binding?.articlesListRv?.invisible()
-                // TODO Show Empty View
+                // --
             }
             is Failure.NetworkConnection -> {
                 notifyWithAction(
@@ -161,7 +164,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
             override fun onQueryTextSubmit(queryText: String): Boolean {
                 searchView.clearFocus()
                 searchItem.collapseActionView()
-                viewModel.updateCategoryQuery(queryText)
+                viewModel.updateSearchQuery(queryText)
                 return true
             }
 

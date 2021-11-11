@@ -31,6 +31,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
         setupLocationGetter()
     }
 
+
+    private fun setupViewModel() {
+        val repository = RepositoryImpl()
+        val viewModelFactory = MainViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+    }
+
     private fun setupObservers() {
         viewModel.onSelectedArticleChange().observe(this, {
             addFragment(ArticleDetailsFragment())
@@ -40,15 +47,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
             title = getString(R.string.article_list_title, it)
         })
 
-        viewModel.isLoading().observe(this,  {
+        viewModel.isLoading().observe(this, {
             showProgressBar(it)
         })
-    }
-
-    private fun setupViewModel() {
-        val repository = RepositoryImpl()
-        val viewModelFactory = MainViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
 
     private fun setupLocationGetter() {
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         return binding.fragmentContainer
     }
 
-    fun showProgressBar(showProgressBar: Boolean) {
+    private fun showProgressBar(showProgressBar: Boolean) {
         if (showProgressBar) {
             binding.loadingViewLl.visible()
         } else {

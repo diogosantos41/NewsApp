@@ -56,31 +56,6 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
         }
     }
 
-    fun updateCountry(countryCode: String, countryName: String) {
-        if (countryCode != this.countryCode) {
-            this.countryCode = countryCode
-            _countryName.value = countryName
-            callGetNews()
-        }
-    }
-
-    fun updateCategoryQuery(queryText: String) {
-        searchQuery = queryText
-        if (searchQuery.isNullOrEmpty()) {
-            callGetNews()
-        } else {
-            callGetNewsByCategory(countryCode, queryText)
-        }
-    }
-
-    fun clearQuery() {
-        updateCategoryQuery("")
-    }
-
-    private fun setSearchQuery() {
-        _searchQuery.value = searchQuery
-    }
-
     private fun handleNewsResponse() {
         when (newsResponse) {
             is Resource.Success -> {
@@ -88,9 +63,6 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
                 if (newsResponse.data == null || newsResponse.data?.articles.isNullOrEmpty()) {
                     _newsFailure.value = Failure.ListIsEmpty
                 } else {
-                    if (!searchQuery.isNullOrEmpty()) {
-                        _searchQuery.value = searchQuery
-                    }
                     _news.value = newsResponse.data
                 }
             }
@@ -101,7 +73,31 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
         _isLoading.value = false
     }
 
+    fun updateCountry(countryCode: String, countryName: String) {
+        if (countryCode != this.countryCode) {
+            this.countryCode = countryCode
+            _countryName.value = countryName
+            callGetNews()
+        }
+    }
 
+    fun updateSearchQuery(queryText: String) {
+        searchQuery = queryText
+        if (searchQuery.isNullOrEmpty()) {
+            callGetNews()
+        } else {
+            callGetNewsByCategory(countryCode, queryText)
+        }
+    }
+
+    fun clearQuery() {
+        updateSearchQuery("")
+    }
+
+    private fun setSearchQuery() {
+        _searchQuery.value = searchQuery
+    }
+    
     fun selectArticle(article: Article) {
         _selectedArticle.value = article
     }
