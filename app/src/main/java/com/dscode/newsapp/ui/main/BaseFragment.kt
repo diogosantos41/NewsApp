@@ -21,21 +21,33 @@ abstract class BaseFragment : Fragment() {
     private fun getViewContainer(): View = (activity as MainActivity).getViewContainer()
 
     private fun setupOnBackPressedHandle() {
+        var supportFragmentManager = activity?.supportFragmentManager
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            if (activity?.supportFragmentManager?.backStackEntryCount == 1) {
+            if (supportFragmentManager?.backStackEntryCount == 1) {
                 activity?.finish()
             } else {
-                activity?.supportFragmentManager?.popBackStack()
+                supportFragmentManager?.popBackStack()
+                try {
+                    supportFragmentManager?.fragments?.get(supportFragmentManager?.fragments.size - 2)
+                        ?.onResume()
+                } catch (e: IndexOutOfBoundsException) {
+                    e.printStackTrace()
+                }
             }
         }
     }
 
-    protected fun showProgressBar() {
-        if (activity is MainActivity) (activity as MainActivity).showProgressBar()
+    override fun onResume() {
+        super.onResume()
+        setToolbarTitle(getToolbarTitle())
     }
 
-    protected fun hideProgressBar() {
-        if (activity is MainActivity) (activity as MainActivity).hideProgressBar()
+    open fun getToolbarTitle(): String {
+        return ""
+    }
+
+    private fun setToolbarTitle(string: String) {
+        if (activity is MainActivity) (activity as MainActivity).title = string
     }
 
     protected fun isLoading(): Boolean {
@@ -43,9 +55,12 @@ abstract class BaseFragment : Fragment() {
         return false
     }
 
+    protected fun notify(message: String) =
+        Snackbar.make(getViewContainer(), message, Snackbar.LENGTH_SHORT).show()
+
     protected fun notifyWithAction(
-        message: Int,
-        actionText: Int,
+        message: String,
+        actionText: String,
         action: () -> Any
     ) {
         val snackBar = Snackbar.make(getViewContainer(), message, Snackbar.LENGTH_INDEFINITE)

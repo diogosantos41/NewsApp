@@ -2,6 +2,7 @@ package com.dscode.newsapp.ui.article_detail
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.text.HtmlCompat
 import com.dscode.newsapp.R
 import com.dscode.newsapp.databinding.FragmentArticleDetailBinding
 import com.dscode.newsapp.ui.main.BaseFragment
@@ -43,9 +44,16 @@ class ArticleDetailsFragment : BaseFragment() {
                         .plus(" ")
                         .plus(it.source.name)
                 this?.articleDetailThumbnailIv?.loadFromUrl(it.urlToImage)
-                this?.articleDetailContentTv?.text = it.content
+                if (!it.content.isNullOrEmpty()) {
+                    this?.articleDetailContentTv?.text =
+                        HtmlCompat.fromHtml(it.content, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                }
             }
         }
+    }
+
+    override fun getToolbarTitle(): String {
+        return getString(R.string.article_details_title)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

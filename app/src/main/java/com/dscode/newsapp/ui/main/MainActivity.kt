@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.dscode.newsapp.R
 import com.dscode.newsapp.common.Constants.DEFAULT_COUNTRY_CODE
+import com.dscode.newsapp.common.Constants.DEFAULT_COUNTRY_NAME
 import com.dscode.newsapp.data.repository.RepositoryImpl
 import com.dscode.newsapp.databinding.ActivityMainBinding
 import com.dscode.newsapp.ui.article_detail.ArticleDetailsFragment
@@ -33,6 +35,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
         viewModel.onSelectedArticleChange().observe(this, {
             addFragment(ArticleDetailsFragment())
         })
+
+        viewModel.getCountryName().observe(this, {
+            title = getString(R.string.article_list_title, it)
+        })
+
+        viewModel.isLoading().observe(this,  {
+            showProgressBar(it)
+        })
     }
 
     private fun setupViewModel() {
@@ -45,7 +55,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if (canSetupLocationService(this)) {
             setupLocationService(this, this)
         } else {
-            viewModel.updateCountryCode(DEFAULT_COUNTRY_CODE)
+            viewModel.updateCountry(DEFAULT_COUNTRY_CODE, DEFAULT_COUNTRY_NAME)
         }
     }
 
@@ -53,12 +63,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         return binding.fragmentContainer
     }
 
-    fun showProgressBar() {
-        binding.loadingViewLl.visible()
-    }
-
-    fun hideProgressBar() {
-        binding.loadingViewLl.invisible()
+    fun showProgressBar(showProgressBar: Boolean) {
+        if (showProgressBar) {
+            binding.loadingViewLl.visible()
+        } else {
+            binding.loadingViewLl.invisible()
+        }
     }
 
     fun isLoading(): Boolean {
@@ -73,6 +83,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         savedInstanceState ?: supportFragmentManager.add(getViewContainer().id, fragment)
 
     override fun onLocationChanged(location: Location) {
-        viewModel.updateCountryCode(getCountryCodeFromLocation(this, location))
+        viewModel.updateCountry(
+            getCountryInfoFromLocation(this, location, COUNTRY_CODE),
+            getCountryInfoFromLocation(this, location, COUNTRY_NAME)
+        )
     }
 }

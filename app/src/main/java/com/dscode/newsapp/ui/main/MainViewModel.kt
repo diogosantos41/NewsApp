@@ -18,15 +18,28 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
 
     private val _newsFailure: MutableLiveData<Failure> = MutableLiveData()
 
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
+
     private val _selectedArticle: MutableLiveData<Article> = MutableLiveData()
+
+    private val _countryName: MutableLiveData<String> = MutableLiveData()
+    val countryName = _countryName
 
     private var countryCode: String = ""
 
+    private val _searchQuery: MutableLiveData<String> = MutableLiveData()
+    private var searchQuery: String = ""
+
     fun callGetNews() {
-        callGetNews(countryCode)
+        if (searchQuery.isNullOrEmpty()) {
+            callGetNews(countryCode)
+        } else {
+            callGetNewsByCategory(countryCode, searchQuery)
+        }
     }
 
     private fun callGetNews(countryCode: String) {
+        _isLoading.value = true
         viewModelScope.launch {
             newsResponse = repositoryImpl.getNews(countryCode)
         }.invokeOnCompletion {
@@ -34,12 +47,50 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
         }
     }
 
+    private fun callGetNewsByCategory(countryCode: String, queryText: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            newsResponse = repositoryImpl.getNewsByCategory(countryCode, queryText)
+        }.invokeOnCompletion {
+            handleNewsResponse()
+        }
+    }
+
+    fun updateCountry(countryCode: String, countryName: String) {
+        if (countryCode != this.countryCode) {
+            this.countryCode = countryCode
+            _countryName.value = countryName
+            callGetNews()
+        }
+    }
+
+    fun updateCategoryQuery(queryText: String) {
+        searchQuery = queryText
+        if (searchQuery.isNullOrEmpty()) {
+            callGetNews()
+        } else {
+            callGetNewsByCategory(countryCode, queryText)
+        }
+    }
+
+    fun clearQuery() {
+        updateCategoryQuery("")
+    }
+
+    private fun setSearchQuery() {
+        _searchQuery.value = searchQuery
+    }
+
     private fun handleNewsResponse() {
         when (newsResponse) {
             is Resource.Success -> {
+                setSearchQuery()
                 if (newsResponse.data == null || newsResponse.data?.articles.isNullOrEmpty()) {
                     _newsFailure.value = Failure.ListIsEmpty
                 } else {
+                    if (!searchQuery.isNullOrEmpty()) {
+                        _searchQuery.value = searchQuery
+                    }
                     _news.value = newsResponse.data
                 }
             }
@@ -47,12 +98,9 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
                 _newsFailure.value = newsResponse.failure
             }
         }
+        _isLoading.value = false
     }
 
-
-    fun updateCountryCode(countryCode: String) {
-        if (countryCode != this.countryCode) callGetNews(countryCode)
-    }
 
     fun selectArticle(article: Article) {
         _selectedArticle.value = article
@@ -65,4 +113,10 @@ class MainViewModel(private val repositoryImpl: RepositoryImpl) : ViewModel() {
     fun onFailure(): LiveData<Failure> = _newsFailure
 
     fun onSelectedArticleChange(): LiveData<Article> = _selectedArticle
+
+    fun getCountryName(): LiveData<String> = _countryName
+
+    fun isLoading(): LiveData<Boolean> = _isLoading
+
+    fun onCategoryQueryChange(): LiveData<String> = _searchQuery
 }

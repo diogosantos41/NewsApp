@@ -7,9 +7,13 @@ import android.location.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.dscode.newsapp.common.Constants.DEFAULT_COUNTRY_CODE
+import com.dscode.newsapp.common.Constants.DEFAULT_COUNTRY_NAME
 import java.io.IOException
 import java.util.*
 
+
+const val COUNTRY_NAME = "COUNTRY NAME"
+const val COUNTRY_CODE = "COUNTRY_CODE"
 
 fun hasLocationPermissions(activity: AppCompatActivity): Boolean {
     return ContextCompat.checkSelfPermission(
@@ -47,15 +51,27 @@ fun canSetupLocationService(activity: AppCompatActivity): Boolean {
     return hasLocationPermissions(activity) && isGPSEnabled(activity)
 }
 
-fun getCountryCodeFromLocation(activity: AppCompatActivity, location: Location): String {
+fun getCountryInfoFromLocation(
+    activity: AppCompatActivity,
+    location: Location,
+    infoTag: String
+): String {
     return try {
         val addresses: List<Address> = Geocoder(activity, Locale.getDefault()).getFromLocation(
             location.latitude,
             location.longitude,
             1
         )
-        addresses[0].countryCode
+        when (infoTag) {
+            COUNTRY_CODE -> addresses[0].countryCode
+            COUNTRY_NAME -> addresses[0].countryName
+            else -> "-"
+        }
     } catch (e: IOException) {
-        DEFAULT_COUNTRY_CODE
+        when (infoTag) {
+            COUNTRY_CODE -> DEFAULT_COUNTRY_CODE
+            COUNTRY_NAME -> DEFAULT_COUNTRY_NAME
+            else -> "-"
+        }
     }
 }

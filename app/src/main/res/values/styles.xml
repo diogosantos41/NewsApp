@@ -48,7 +48,16 @@
         <item name="android:background">@color/colorWhite</item>
     </style>
 
-    <!-- Item Grid Layout styles -->
+    <style name="EmptyViewText" parent="Text20Bold">
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
+    <!-- Articles List Layout styles -->
+
+    <style name="ArticleListQueryTextButton" parent="Text12Bold">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
 
     <style name="ItemGridArticleTitle" parent="Text16Bold">
         <item name="android:textColor">@color/colorPrimary</item>

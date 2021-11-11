@@ -17,9 +17,12 @@ fun View.invisible() {
 fun View.isVisible() = this.visibility == View.VISIBLE
 
 fun ImageView.loadFromUrl(url: String?) =
-    Picasso.get().load(url)
-        .centerCrop()
-        .placeholder(R.color.colorPrimary)
-        .fit()
-        .into(this);
-
+    if (url.isNullOrEmpty()) {
+        setImageDrawable(resources.getDrawable(R.drawable.image_palceholder, null))
+    } else {
+        Picasso.get().load(url)
+            .centerCrop()
+            .placeholder(R.drawable.image_palceholder)
+            .fit()
+            .into(this);
+    }

@@ -1,7 +1,10 @@
 package com.dscode.newsapp.ui.article_list
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dscode.newsapp.R
@@ -12,6 +15,7 @@ import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_ON
 import com.dscode.newsapp.ui.article_list.ArticleAdapter.Companion.SPAN_COUNT_TWO
 import com.dscode.newsapp.ui.main.BaseFragment
 import com.dscode.newsapp.utils.invisible
+import com.dscode.newsapp.utils.visible
 
 
 class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener {
@@ -39,28 +43,44 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showProgressBar()
         setupRecyclerView()
     }
 
     private fun refreshNews() {
-        showProgressBar()
         viewModel.callGetNews()
+    }
+
+    private fun clearQuery() {
+        viewModel.clearQuery()
     }
 
     private fun setupObservers() {
         viewModel.getNews().observe(this, {
+            hideEmptyView()
             articleAdapter.submitList(it.articles)
-            hideProgressBar()
         })
 
         viewModel.onFailure().observe(this, {
+            showEmptyView()
             handleFailure(it)
-            hideProgressBar()
+        })
+
+        viewModel.onCategoryQueryChange().observe(this, {
+            if (it.isNotEmpty()) {
+                binding?.articlesListSearchFilterLl?.visible()
+                binding?.articlesListSearchFilterQueryTv?.text =
+                    getString(R.string.article_list_searching_category, it)
+                binding?.articlesListSearchFilterClearTv?.setOnClickListener {
+                    binding?.articlesListSearchFilterLl?.invisible()
+                    clearQuery()
+                }
+            } else {
+                binding?.articlesListSearchFilterLl?.invisible()
+            }
         })
     }
 
-    private fun setupRecyclerView() = binding?.articlesRv?.apply {
+    private fun setupRecyclerView() = binding?.articlesListRv?.apply {
         gridLayoutManager =
             StaggeredGridLayoutManager(SPAN_COUNT_TWO, StaggeredGridLayoutManager.VERTICAL)
         articleAdapter = ArticleAdapter(this@ArticlesListFragment, gridLayoutManager)
@@ -72,27 +92,44 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         viewModel.selectArticle(article)
     }
 
-
     private fun handleFailure(failure: Failure) {
         when (failure) {
             is Failure.ListIsEmpty -> {
-                binding?.articlesRv?.invisible()
+                binding?.articlesListRv?.invisible()
                 // TODO Show Empty View
             }
             is Failure.NetworkConnection -> {
                 notifyWithAction(
-                    R.string.failure_network_connection,
-                    R.string.generic_retry,
+                    getString(R.string.failure_network_connection),
+                    getString(R.string.generic_retry),
                     ::refreshNews
                 )
             }
             is Failure.UnexpectedError -> {
                 notifyWithAction(
-                    R.string.failure_unexpected_error,
-                    R.string.generic_retry,
+                    getString(R.string.failure_unexpected_error),
+                    getString(R.string.generic_retry),
                     ::refreshNews
                 )
             }
+        }
+    }
+
+    private fun showEmptyView() {
+        binding?.articlesListEmptyView?.root?.visible()
+        binding?.articlesListRv?.invisible()
+    }
+
+    private fun hideEmptyView() {
+        binding?.articlesListEmptyView?.root?.invisible()
+        binding?.articlesListRv?.visible()
+    }
+
+    override fun getToolbarTitle(): String {
+        return if (viewModel.countryName.value.isNullOrEmpty()) {
+            getString(R.string.article_list_title_without_location)
+        } else {
+            getString(R.string.article_list_title, viewModel.countryName.value)
         }
     }
 
@@ -100,19 +137,38 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         super.onPrepareOptionsMenu(menu)
         menu.clear()
         activity?.menuInflater?.inflate(R.menu.menu_articles_list, menu)
+        setupSearchView(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (!isLoading()) {
-            when (item.itemId) {
-                R.id.menu_item_change_list_layout -> {
-                    switchLayout()
-                    switchIcon(item)
-                    true
-                }
+        when (item.itemId) {
+            R.id.menu_item_change_list_layout -> {
+                switchLayout()
+                switchIcon(item)
+                true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupSearchView(menu: Menu) {
+        val manager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchItem = menu.findItem(R.id.menu_item_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
+        searchView.queryHint = getString(R.string.article_list_search_query_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(queryText: String): Boolean {
+                searchView.clearFocus()
+                searchItem.collapseActionView()
+                viewModel.updateCategoryQuery(queryText)
+                return true
+            }
+
+            override fun onQueryTextChange(queryText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     private fun switchLayout() {
@@ -134,7 +190,7 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding?.articlesRv?.adapter = null
+        binding?.articlesListRv?.adapter = null
         _binding = null
     }
 }
