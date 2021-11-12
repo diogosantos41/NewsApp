@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -160,6 +161,22 @@ class ArticlesListFragment : BaseFragment(), ArticleAdapter.OnItemClickListener 
         val searchView = searchItem.actionView as SearchView
         searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
         searchView.queryHint = getString(R.string.article_list_search_query_hint)
+
+        var mQueryTextView =
+            searchView.findViewById<View>(R.id.search_src_text) as AutoCompleteTextView
+        mQueryTextView.setDropDownBackgroundResource(R.color.colorPrimary)
+        var newsAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.item_search_dropdown,
+            resources.getStringArray(R.array.search_category_hint)
+        )
+        mQueryTextView.setAdapter(newsAdapter)
+        mQueryTextView.onItemClickListener =
+            AdapterView.OnItemClickListener { _: AdapterView<*>, view1: View, _: Int, _: Long ->
+                searchView.setQuery(((view1 as TextView).text as String), true)
+            }
+
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(queryText: String): Boolean {
                 searchView.clearFocus()

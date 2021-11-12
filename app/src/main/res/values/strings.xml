@@ -14,11 +14,22 @@
     <string name="article_list_title_without_location">News</string>
     <string name="article_list_title">News from %s</string>
 
-    <string name="article_list_search_query_hint">Search by category...</string>
+    <string name="article_list_search_query_hint">Search by category…</string>
     <string name="article_source_by">By</string>
     <string name="article_source_published_by">Published by</string>
     <string name="article_date_published_on">Published on</string>
     <string name="article_details_title">Article Details</string>
     <string name="failure_unexpected_error">An unexpected error has occurred</string>
     <string name="failure_network_connection">Cannot reach server. Please check your internet connection.</string>
+
+    <string-array name="search_category_hint">
+        <item>Business</item>
+        <item>Entertainment</item>
+        <item>General</item>
+        <item>Health</item>
+        <item>Science</item>
+        <item>Sports</item>
+        <item>Technology</item>
+    </string-array>
+
 </resources>
