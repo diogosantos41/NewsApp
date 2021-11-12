@@ -4,23 +4,22 @@
     <string name="generic_ok">OK</string>
     <string name="generic_retry">Retry</string>
     <string name="generic_information">Information</string>
+    <string name="generic_empty_view_message">No data to display</string>
 
     <string name="permissions_denied_message">Location permissions are used to show specific news from your current location, but do not worry, without this permission we will use the United States by default.</string>
-
-    <string name="generic_empty_view_message">No data to display</string>
+    <string name="failure_unexpected_error">An unexpected error has occurred</string>
+    <string name="failure_network_connection">Cannot reach server. Please check your internet connection.</string>
 
     <string name="article_list_clean_query">Search all categories</string>
     <string name="article_list_searching_category">Searching: %s</string>
     <string name="article_list_title_without_location">News</string>
     <string name="article_list_title">News from %s</string>
-
     <string name="article_list_search_query_hint">Search by category…</string>
     <string name="article_source_by">By</string>
     <string name="article_source_published_by">Published by</string>
     <string name="article_date_published_on">Published on</string>
     <string name="article_details_title">Article Details</string>
-    <string name="failure_unexpected_error">An unexpected error has occurred</string>
-    <string name="failure_network_connection">Cannot reach server. Please check your internet connection.</string>
+
 
     <string-array name="search_category_hint">
         <item>Business</item>
@@ -31,5 +30,4 @@
         <item>Sports</item>
         <item>Technology</item>
     </string-array>
-
 </resources>
