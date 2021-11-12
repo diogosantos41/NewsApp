@@ -23,5 +23,6 @@
 
     <!-- Articles Detail -->
     <dimen name="article_detail_thumbnail_height">180dp</dimen>
+    <dimen name="article_detail_landscape_thumbnail_width">300dp</dimen>
 
 </resources>
